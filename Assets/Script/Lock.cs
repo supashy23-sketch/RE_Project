@@ -38,7 +38,7 @@ public class Lock : MonoBehaviour
         playerInRange = inRadius && hasMatchingKey;
 
         if (inRadius && !hasMatchingKey)
-            Debug.Log($"Lock [{keyID}]: In range but player does not have this key. Keys held: {keyHolder.GetKeyList()}");
+            //Debug.Log($"Lock [{keyID}]: In range but player does not have this key. Keys held: {keyHolder.GetKeyList()}");
 
         if (playerInRange && Keyboard.current != null && Keyboard.current.fKey.wasPressedThisFrame)
             Unlock();
