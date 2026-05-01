@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class CutsceneTrigger : MonoBehaviour
 {
@@ -10,11 +9,13 @@ public class CutsceneTrigger : MonoBehaviour
     [Header("Camera")]
     public Transform[] cameraPoints;
     public float[] waitTimes;
-    public Camera mainCamera;
-    public Transform playerCameraHolder;
+
+    public Camera mainCamera;                 // Main Camera
+    public Transform playerCameraHolder;      // จุดที่กล้องอยู่ตอนปกติ
+    public GameObject cinemachineCamera;      // ตัว Cinemachine Virtual Camera
 
     [Header("Player")]
-    public MonoBehaviour playerMovement;
+    public MonoBehaviour playerMovement;      // FirstPersonController
 
     private Transform player;
     private bool playerInRange = false;
@@ -24,7 +25,9 @@ public class CutsceneTrigger : MonoBehaviour
     {
         GameObject playerObj = GameObject.FindWithTag("Player");
         if (playerObj != null)
+        {
             player = playerObj.transform;
+        }
     }
 
     void Update()
@@ -34,29 +37,44 @@ public class CutsceneTrigger : MonoBehaviour
         float distance = Vector3.Distance(transform.position, player.position);
         playerInRange = distance <= triggerRadius;
 
-        if (playerInRange && Keyboard.current.fKey.wasPressedThisFrame)
+        if (playerInRange && Input.GetKeyDown(KeyCode.F))
+        {
             StartCoroutine(PlayCutscene());
+        }
     }
 
     void OnGUI()
     {
         if (playerInRange && !hasPlayed)
-            GUI.Label(new Rect(Screen.width / 2 - 120, Screen.height - 100, 240, 30), "Press F to start cutscene");
+        {
+            GUI.Label(new Rect(Screen.width / 2 - 120, Screen.height - 100, 240, 30),
+                "Press F to start cutscene");
+        }
     }
 
     IEnumerator PlayCutscene()
     {
         hasPlayed = true;
 
+        Debug.Log("Cutscene Start");
+
         // 🔒 ล็อก player
-        playerMovement.enabled = false;
+        if (playerMovement != null)
+            playerMovement.enabled = false;
 
-        // แยกกล้องออก
-        mainCamera.transform.parent = null;
+        // ❗ ปิด Cinemachine (สำคัญมาก)
+        if (cinemachineCamera != null)
+            cinemachineCamera.SetActive(false);
 
+        // แยกกล้องออกจาก player
+        mainCamera.transform.SetParent(null);
+
+        // 🎬 เล่นคัทซีนตามจุด
         for (int i = 0; i < cameraPoints.Length; i++)
         {
             Transform point = cameraPoints[i];
+
+            Debug.Log("Move to: " + point.name);
 
             mainCamera.transform.position = point.position;
             mainCamera.transform.rotation = point.rotation;
@@ -65,13 +83,20 @@ public class CutsceneTrigger : MonoBehaviour
             yield return new WaitForSeconds(wait);
         }
 
-        // 🔙 กลับกล้อง
+        // 🔙 กลับกล้องไป player
         mainCamera.transform.SetParent(playerCameraHolder);
         mainCamera.transform.localPosition = Vector3.zero;
         mainCamera.transform.localRotation = Quaternion.identity;
 
+        // ❗ เปิด Cinemachine กลับ
+        if (cinemachineCamera != null)
+            cinemachineCamera.SetActive(true);
+
         // 🔓 ปลดล็อก player
-        playerMovement.enabled = true;
+        if (playerMovement != null)
+            playerMovement.enabled = true;
+
+        Debug.Log("Cutscene End");
     }
 
     void OnDrawGizmosSelected()
