@@ -13,6 +13,8 @@ public class AITarget : MonoBehaviour
     [Header("Attack")]
     public float AttackCooldown = 1.5f;
 
+    private PlayerHealth playerHealth;
+
     private float lastAttackTime;
 
     private NavMeshAgent m_Agent;
@@ -38,6 +40,7 @@ public class AITarget : MonoBehaviour
     {
         m_Agent = GetComponent<NavMeshAgent>();
         m_Animator = GetComponent<Animator>();
+        playerHealth = target.GetComponent<PlayerHealth>();
     }
 
     void Update()
@@ -137,6 +140,12 @@ public class AITarget : MonoBehaviour
         if (Time.time >= lastAttackTime + AttackCooldown)
         {
             m_Animator.SetTrigger("Attack");
+
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(); // 🔥 ลดเลือดตรงนี้
+            }
+
             lastAttackTime = Time.time;
         }
 
