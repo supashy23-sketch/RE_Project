@@ -36750,17 +36750,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 702301742534323492, guid: 03bf82c7497183b488e6802ed19a5001, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2242163853234053134, guid: 03bf82c7497183b488e6802ed19a5001, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.81
+      value: 29.7
       objectReference: {fileID: 0}
     - target: {fileID: 2242163853234053134, guid: 03bf82c7497183b488e6802ed19a5001, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 31.12
+      value: 7.51
       objectReference: {fileID: 0}
     - target: {fileID: 2242163853234053134, guid: 03bf82c7497183b488e6802ed19a5001, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.7
+      value: -4.77
       objectReference: {fileID: 0}
     - target: {fileID: 2242163853234053134, guid: 03bf82c7497183b488e6802ed19a5001, type: 3}
       propertyPath: m_LocalRotation.w
@@ -36793,6 +36797,10 @@ PrefabInstance:
     - target: {fileID: 3774510535538287582, guid: 03bf82c7497183b488e6802ed19a5001, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4748592914699606869, guid: 03bf82c7497183b488e6802ed19a5001, type: 3}
+      propertyPath: m_Range
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5596092387871803866, guid: 03bf82c7497183b488e6802ed19a5001, type: 3}
       propertyPath: damageOverlay
